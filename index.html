@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SRJ INTERNATIONAL | Global Football Recruitment</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/futbol.svg">
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="logo">SRJ INTERNATIONAL</div>
+            <ul class="nav-links">
+                <li><a href="#dashboard">Dashboard</a></li>
+                <li><a href="market.html">Marketplace</a></li>
+                <li><a href="#register">Join Agency</a></li>
+                <li><button id="loginBtn" class="btn-primary">Scout Login</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Connecting Football Professionals to Global Clubs</h1>
+            <p>Complete Agency Services for Players, Coaches, Medical & Admin Staff.</p>
+        </section>
+
+        <section id="dashboard" class="container">
+            <div class="stats-grid">
+                <div class="card">
+                    <h3>Active Players</h3>
+                    <p class="stat" id="player-count">0</p>
+                </div>
+                <div class="card">
+                    <h3>Pro Staff</h3>
+                    <p class="stat" id="staff-count">0</p>
+                </div>
+                <div class="card">
+                    <h3>Club Requests</h3>
+                    <p class="stat" id="club-count">0</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="register" class="container">
+            <div class="form-container">
+                <div class="form-tabs">
+                    <button id="tab-player" class="tab-btn active">Register as Player</button>
+                    <button id="tab-staff" class="tab-btn">Register as Staff</button>
+                    <button id="tab-club" class="tab-btn">Club Request</button>
+                </div>
+
+                <form id="playerForm">
+                    <h2>Player Application</h2>
+                    <div class="input-group">
+                        <input type="text" id="pName" placeholder="Full Name" required>
+                        <input type="text" id="pPos" placeholder="Position (e.g. Striker, CB)" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="number" id="pAge" placeholder="Age" required>
+                        <input type="text" id="pNation" placeholder="Nationality" required>
+                    </div>
+                    <input type="text" id="pClub" placeholder="Current Club">
+                    <button type="submit" class="btn-submit">Submit Profile to SRJ</button>
+                </form>
+
+                <form id="staffForm" style="display:none;">
+                    <h2>Professional Staff Application</h2>
+                    <div class="input-group">
+                        <input type="text" id="sName" placeholder="Full Name" required>
+                        <select id="sRole" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px;">
+                            <option value="" disabled selected>Select Your Role</option>
+                            <option value="Coach">Coach / Technical Staff</option>
+                            <option value="Medical">Medical (Physio/Doctor)</option>
+                            <option value="Scout">Scout / Analyst</option>
+                            <option value="Admin">Management / Admin</option>
+                            <option value="Other">Other Profession</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="sLicense" placeholder="Qualification / License" required>
+                        <input type="number" id="sExp" placeholder="Years of Exp" required>
+                    </div>
+                    <input type="text" id="sNation" placeholder="Nationality" required>
+                    <button type="submit" class="btn-submit">Submit Staff Profile</button>
+                </form>
+
+                <form id="clubForm" style="display:none;">
+                    <h2>Post Club Opportunity</h2>
+                    <div class="input-group">
+                        <input type="text" id="clubName" placeholder="Club Name" required>
+                        <input type="text" id="clubLoc" placeholder="Country / Region" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="reqPos" placeholder="Position Required" required>
+                        <select id="offerType">
+                            <option value="Trial Offer">Trial Offer</option>
+                            <option value="Direct Contract">Direct Contract</option>
+                            <option value="Scouting Event">Scouting Event</option>
+                        </select>
+                    </div>
+                    <textarea id="clubNotes" placeholder="Additional details..."></textarea>
+                    <button type="submit" class="btn-submit">Post Request to Market</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p><strong>SRJ INTERNATIONAL</strong> | Office: +49 2116416594</p>
+            <p>Email: srjamesscout@gmail.com | Germany</p>
+        </div>
+    </footer>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>

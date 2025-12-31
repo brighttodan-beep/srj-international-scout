@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SRJ Admin Panel | Management Console</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        .admin-container { padding: 40px 5%; max-width: 1200px; margin: auto; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 40px; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #051923; color: white; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; }
+        
+        mark { background: #e3f2fd; color: #00a8e8; padding: 4px 8px; border-radius: 4px; font-weight: 600; font-size: 0.8rem; }
+        
+        .delete-btn { background: #ff4d4d; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .delete-btn:hover { background: #cc0000; transform: scale(1.05); }
+        
+        /* Export Button Styling */
+        .export-btn { 
+            background: #27ae60; 
+            color: white; 
+            border: none; 
+            padding: 8px 15px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            font-size: 0.85rem;
+            transition: 0.3s;
+        }
+        .export-btn:hover { background: #1e8449; }
+
+        .search-box { width: 100%; padding: 15px; margin: 20px 0; border: 2px solid #00a8e8; border-radius: 8px; font-size: 1rem; outline: none; }
+        .search-box:focus { box-shadow: 0 0 10px rgba(0, 168, 232, 0.2); }
+        
+        .table-header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        h3 { color: #051923; border-left: 5px solid #00a8e8; padding-left: 15px; margin: 0; }
+    </style>
+</head>
+<body style="background: #f4f7f6;">
+
+    <header>
+        <nav style="background: #051923; color: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center;">
+            <div class="logo" style="font-weight: 700; letter-spacing: 1px;">SRJ ADMIN MANAGEMENT</div>
+            <a href="index.html" style="color: #00a8e8; text-decoration: none; font-weight: 600; border: 1px solid #00a8e8; padding: 5px 15px; border-radius: 5px;">View Live Site</a>
+        </nav>
+    </header>
+
+    <div class="admin-container">
+        <h1 style="margin-bottom: 10px;">Agency Database</h1>
+        <p style="color: #666; margin-bottom: 30px;">Manage all registered players and professional football staff.</p>
+        
+        <input type="text" id="positionSearch" class="search-box" placeholder="🔍 Search by Name, Position, or Role (e.g. 'Physio', 'Striker', 'Coach')...">
+
+        <div class="table-header-flex">
+            <h3>Players Registry</h3>
+            <button class="export-btn" onclick="exportTable('playerBody', 'SRJ_Players_Export')">📥 Export Players</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>Age</th>
+                    <th>Nationality</th>
+                    <th>Club</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="playerBody">
+                <tr><td colspan="6" style="text-align:center;">Connecting to Database...</td></tr>
+            </tbody>
+        </table>
+
+        <div class="table-header-flex">
+            <h3>Professional Staff Registry</h3>
+            <button class="export-btn" onclick="exportTable('coachBody', 'SRJ_Staff_Export')">📥 Export Staff</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Role / Dept</th>
+                    <th>Experience</th>
+                    <th>Nationality</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="coachBody">
+                <tr><td colspan="5" style="text-align:center;">Connecting to Database...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script type="module" src="admin.js"></script>
+</body>
+</html>
