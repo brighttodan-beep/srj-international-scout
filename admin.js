@@ -15,7 +15,7 @@ const db = getFirestore(app);
 
 // --- DELETE FUNCTION ---
 window.deleteEntry = async (col, id) => {
-    if(confirm("Permanently delete this professional record?")) {
+    if(confirm("Permanently delete this professional record? This will also remove it from the public marketplace.")) {
         try {
             await deleteDoc(doc(db, col, id));
         } catch (err) {
@@ -30,18 +30,22 @@ window.exportTable = (tableId, fileName) => {
     const rows = tableBody.querySelectorAll("tr");
     let csv = [];
     
+    // Header Logic based on table
     if(tableId === "playerBody") {
         csv.push("Name,Position,Age,Physical (H/W),Foot,Nationality,Current Club");
-    } else {
+    } else if(tableId === "coachBody") {
         csv.push("Name,Role/Dept,Physical (H/W),Experience,Nationality");
+    } else {
+        csv.push("Club Name,Location,Position Required,Offer Type,Notes");
     }
 
     rows.forEach(row => {
         const cols = row.querySelectorAll("td");
         if (cols.length > 1) { 
             let rowData = [];
+            // Loop through cells except the 'Action' column
             for (let i = 0; i < cols.length - 1; i++) {
-                let cellText = cols[i].innerText.replace(/"/g, '""'); 
+                let cellText = cols[i].innerText.replace(/"/g, '""').replace(/\n/g, ' '); 
                 rowData.push(`"${cellText}"`);
             }
             csv.push(rowData.join(","));
@@ -63,15 +67,12 @@ window.exportTable = (tableId, fileName) => {
 onSnapshot(collection(db, "players"), (snapshot) => {
     const tbody = document.getElementById('playerBody');
     tbody.innerHTML = ""; 
-    
     if (snapshot.empty) {
         tbody.innerHTML = "<tr><td colspan='8' style='text-align:center;'>No players found.</td></tr>";
         return;
     }
-
     snapshot.forEach((doc) => {
         const p = doc.data();
-        // Ensure 8 <td> tags match the 8 <th> tags in HTML
         tbody.innerHTML += `
             <tr class="searchable-row" data-search="${p.name.toLowerCase()} ${p.position.toLowerCase()}">
                 <td>${p.name}</td>
@@ -91,15 +92,12 @@ onSnapshot(collection(db, "players"), (snapshot) => {
 onSnapshot(collection(db, "staff"), (snapshot) => {
     const tbody = document.getElementById('coachBody');
     tbody.innerHTML = "";
-    
     if (snapshot.empty) {
         tbody.innerHTML = "<tr><td colspan='6' style='text-align:center;'>No professional staff found.</td></tr>";
         return;
     }
-
     snapshot.forEach((doc) => {
         const s = doc.data();
-        // Ensure 6 <td> tags match the 6 <th> tags in HTML
         tbody.innerHTML += `
             <tr class="searchable-row" data-search="${s.name.toLowerCase()} ${s.role.toLowerCase()}">
                 <td>${s.name}</td>
@@ -113,11 +111,19 @@ onSnapshot(collection(db, "staff"), (snapshot) => {
     });
 });
 
-// --- SEARCH FILTER ---
-document.getElementById('positionSearch').addEventListener('input', (e) => {
-    const term = e.target.value.toLowerCase();
-    document.querySelectorAll('.searchable-row').forEach(row => {
-        const searchData = row.getAttribute('data-search');
-        row.style.display = searchData.includes(term) ? "" : "none";
-    });
-});
+// --- NEW: LOAD CLUB REQUESTS (6 Columns) ---
+onSnapshot(collection(db, "club_requests"), (snapshot) => {
+    const tbody = document.getElementById('clubBody');
+    tbody.innerHTML = "";
+    if (snapshot.empty) {
+        tbody.innerHTML = "<tr><td colspan='6' style='text-align:center;'>No active market requests.</td></tr>";
+        return;
+    }
+    snapshot.forEach((doc) => {
+        const c = doc.data();
+        let typeStyle = "color: #27ae60;"; 
+        if(c.offerType === "Job Opportunity") typeStyle = "color: #3498db;";
+        if(c.offerType === "Direct Contract") typeStyle = "color: #f39c12;";
+
+        tbody.innerHTML += `
+            <tr class="searchable-row" data-search="${c.clubName.toLowerCase()} ${c.positionRequired.toLowerCase()} ${c.location.toLowerCase

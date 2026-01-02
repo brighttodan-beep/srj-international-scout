@@ -34,9 +34,9 @@
 
     <div class="admin-container">
         <h1>Agency Database</h1>
-        <p style="color: #666; margin-bottom: 30px;">Manage all registered players and professional football staff.</p>
+        <p style="color: #666; margin-bottom: 30px;">Manage all registered players, professional staff, and market opportunities.</p>
         
-        <input type="text" id="positionSearch" class="search-box" placeholder="🔍 Search by Name, Position, or Role...">
+        <input type="text" id="positionSearch" class="search-box" placeholder="🔍 Search records by name, club, or position...">
 
         <div class="table-header-flex">
             <h3>Players Registry</h3>
@@ -77,6 +77,26 @@
             </thead>
             <tbody id="coachBody">
                 <tr><td colspan="6" style="text-align:center;">Connecting to Database...</td></tr>
+            </tbody>
+        </table>
+
+        <div class="table-header-flex" style="margin-top: 40px;">
+            <h3>Marketplace Opportunities (Club Requests)</h3>
+            <button class="export-btn" onclick="exportTable('clubBody', 'SRJ_Market_Export')">📥 Export Market Data</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Club Name</th>
+                    <th>Location</th>
+                    <th>Position Required</th>
+                    <th>Offer Type</th>
+                    <th>Notes</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="clubBody">
+                <tr><td colspan="6" style="text-align:center;">Loading Market Opportunities...</td></tr>
             </tbody>
         </table>
     </div>
