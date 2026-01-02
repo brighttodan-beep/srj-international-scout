@@ -47,19 +47,19 @@ onSnapshot(collection(db, "club_requests"), (snap) => {
 
 // --- SUBMISSIONS ---
 
-// 1. Player Submission (Enhanced with Physical Profile)
+// 1. Player Submission
 playerForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     try {
         await addDoc(collection(db, "players"), {
-            name: document.getElementById('pName').value,
-            position: document.getElementById('pPos').value,
+            name: document.getElementById('pName').value.trim(),
+            position: document.getElementById('pPos').value.trim(),
             age: document.getElementById('pAge').value,
-            nationality: document.getElementById('pNation').value,
-            height: document.getElementById('pHeight').value, // Added
-            weight: document.getElementById('pWeight').value, // Added
-            foot: document.getElementById('pFoot').value,     // Added
-            club: document.getElementById('pClub').value || 'Free Agent',
+            nationality: document.getElementById('pNation').value.trim(),
+            height: document.getElementById('pHeight').value,
+            weight: document.getElementById('pWeight').value,
+            foot: document.getElementById('pFoot').value,
+            club: document.getElementById('pClub').value.trim() || 'Free Agent',
             timestamp: new Date().toISOString()
         });
         alert("Player application sent successfully! Mr. Sunny James will review your profile.");
@@ -67,18 +67,18 @@ playerForm.addEventListener('submit', async (e) => {
     } catch (err) { alert(err.message); }
 });
 
-// 2. Staff Submission (Includes Physical Stats)
+// 2. Staff Submission
 staffForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     try {
         await addDoc(collection(db, "staff"), {
-            name: document.getElementById('sName').value,
+            name: document.getElementById('sName').value.trim(),
             role: document.getElementById('sRole').value,
-            height: document.getElementById('sHeight').value || 'N/A', // Added
-            weight: document.getElementById('sWeight').value || 'N/A', // Added
-            qualification: document.getElementById('sLicense').value,
+            height: document.getElementById('sHeight').value || 'N/A',
+            weight: document.getElementById('sWeight').value || 'N/A',
+            qualification: document.getElementById('sLicense').value.trim(),
             experience: document.getElementById('sExp').value,
-            nationality: document.getElementById('sNation').value,
+            nationality: document.getElementById('sNation').value.trim(),
             timestamp: new Date().toISOString()
         });
         alert("Professional staff profile registered!");
@@ -86,16 +86,16 @@ staffForm.addEventListener('submit', async (e) => {
     } catch (err) { alert(err.message); }
 });
 
-// 3. Club Request Submission
+// 3. Club Request Submission (Supports "Job Opportunity")
 clubForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     try {
         await addDoc(collection(db, "club_requests"), {
-            clubName: document.getElementById('clubName').value,
-            location: document.getElementById('clubLoc').value,
-            positionRequired: document.getElementById('reqPos').value,
-            offerType: document.getElementById('offerType').value,
-            notes: document.getElementById('clubNotes').value,
+            clubName: document.getElementById('clubName').value.trim(),
+            location: document.getElementById('clubLoc').value.trim(),
+            positionRequired: document.getElementById('reqPos').value.trim(),
+            offerType: document.getElementById('offerType').value, // Captures Trial, Contract, or Job
+            notes: document.getElementById('clubNotes').value.trim(),
             timestamp: new Date().toISOString()
         });
         alert("Opportunity posted to Marketplace!");

@@ -29,10 +29,11 @@ onSnapshot(q, (snapshot) => {
     snapshot.forEach((doc) => {
         const data = doc.data();
         
-        // Determine badge class
-        let badgeClass = "badge-trial";
-        if(data.offerType === "Direct Contract") badgeClass = "badge-contract";
-        if(data.offerType === "Scouting Event") badgeClass = "badge-event";
+        // --- BADGE LOGIC ---
+        let badgeClass = "badge-trial"; // Default (Green)
+        if(data.offerType === "Direct Contract") badgeClass = "badge-contract"; // Gold/Yellow
+        if(data.offerType === "Scouting Event") badgeClass = "badge-event";     // Red/Purple
+        if(data.offerType === "Job Opportunity") badgeClass = "badge-job";      // NEW: Blue
 
         const card = document.createElement('div');
         card.className = "opportunity-card";

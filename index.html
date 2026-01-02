@@ -83,7 +83,7 @@
                     <h2>Professional Staff Application</h2>
                     <div class="input-group">
                         <input type="text" id="sName" placeholder="Full Name" required>
-                        <select id="sRole" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px;">
+                        <select id="sRole" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px;" required>
                             <option value="" disabled selected>Select Your Role</option>
                             <option value="Coach">Coach / Technical Staff</option>
                             <option value="Medical">Medical (Physio/Doctor)</option>
@@ -111,14 +111,16 @@
                         <input type="text" id="clubLoc" placeholder="Country / Region" required>
                     </div>
                     <div class="input-group">
-                        <input type="text" id="reqPos" placeholder="Position Required" required>
-                        <select id="offerType">
+                        <input type="text" id="reqPos" placeholder="Position Required (e.g. U19 Coach, LW)" required>
+                        <select id="offerType" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px;" required>
+                            <option value="" disabled selected>Select Offer Type</option>
                             <option value="Trial Offer">Trial Offer</option>
                             <option value="Direct Contract">Direct Contract</option>
                             <option value="Scouting Event">Scouting Event</option>
+                            <option value="Job Opportunity">Job Opportunity</option>
                         </select>
                     </div>
-                    <textarea id="clubNotes" placeholder="Additional details..."></textarea>
+                    <textarea id="clubNotes" placeholder="Additional details (Salary, Duration, Housing etc.)..."></textarea>
                     <button type="submit" class="btn-submit">Post Request to Market</button>
                 </form>
             </div>
