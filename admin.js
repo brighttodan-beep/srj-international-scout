@@ -25,27 +25,25 @@ window.deleteEntry = async (col, id) => {
     }
 };
 
-// EXPORT FUNCTION: Converts table data to a CSV file
+// EXPORT FUNCTION: Updated to include Height, Weight, and Foot
 window.exportTable = (tableId, fileName) => {
     const tableBody = document.getElementById(tableId);
     const rows = tableBody.querySelectorAll("tr");
     let csv = [];
     
-    // 1. Add Headers based on which table is being exported
+    // 1. Updated Headers for Scouting Reports
     if(tableId === "playerBody") {
-        csv.push("Name,Position,Age,Nationality,Current Club");
+        csv.push("Name,Position,Age,Physical (H/W),Foot,Nationality,Current Club");
     } else {
-        csv.push("Name,Role/Dept,Experience,Nationality");
+        csv.push("Name,Role/Dept,Physical (H/W),Experience,Nationality");
     }
 
     // 2. Parse Data Rows
     rows.forEach(row => {
         const cols = row.querySelectorAll("td");
-        if (cols.length > 1) { // Skip "No data" or "Connecting" rows
+        if (cols.length > 1) { 
             let rowData = [];
-            // Loop through cells but skip the last one (the 'Delete' button)
             for (let i = 0; i < cols.length - 1; i++) {
-                // Wrap in quotes to prevent commas in names from breaking columns
                 let cellText = cols[i].innerText.replace(/"/g, '""'); 
                 rowData.push(`"${cellText}"`);
             }
@@ -53,7 +51,7 @@ window.exportTable = (tableId, fileName) => {
         }
     });
 
-    // 3. Create and trigger download
+    // 3. Trigger download
     const csvString = csv.join("\n");
     const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement("a");
@@ -73,7 +71,7 @@ onSnapshot(collection(db, "players"), (snapshot) => {
     tbody.innerHTML = ""; 
     
     if (snapshot.empty) {
-        tbody.innerHTML = "<tr><td colspan='6' style='text-align:center;'>No players found.</td></tr>";
+        tbody.innerHTML = "<tr><td colspan='8' style='text-align:center;'>No players found.</td></tr>";
         return;
     }
 
@@ -84,6 +82,8 @@ onSnapshot(collection(db, "players"), (snapshot) => {
                 <td>${p.name}</td>
                 <td><strong>${p.position}</strong></td>
                 <td>${p.age}</td>
+                <td>${p.height}cm / ${p.weight}kg</td>
+                <td><mark style="background:#fff3cd; color:#856404;">${p.foot || 'N/A'}</mark></td>
                 <td>${p.nationality}</td>
                 <td>${p.club || 'Free Agent'}</td>
                 <td><button class="delete-btn" onclick="deleteEntry('players', '${doc.id}')">Delete</button></td>
@@ -98,7 +98,7 @@ onSnapshot(collection(db, "staff"), (snapshot) => {
     tbody.innerHTML = "";
     
     if (snapshot.empty) {
-        tbody.innerHTML = "<tr><td colspan='5' style='text-align:center;'>No professional staff found.</td></tr>";
+        tbody.innerHTML = "<tr><td colspan='6' style='text-align:center;'>No professional staff found.</td></tr>";
         return;
     }
 
@@ -108,6 +108,7 @@ onSnapshot(collection(db, "staff"), (snapshot) => {
             <tr class="searchable-row" data-search="${s.name.toLowerCase()} ${s.role.toLowerCase()}">
                 <td>${s.name}</td>
                 <td><mark>${s.role}</mark></td>
+                <td>${s.height && s.weight ? s.height + 'cm / ' + s.weight + 'kg' : 'N/A'}</td>
                 <td>${s.experience} Years</td>
                 <td>${s.nationality}</td>
                 <td><button class="delete-btn" onclick="deleteEntry('staff', '${doc.id}')">Delete</button></td>

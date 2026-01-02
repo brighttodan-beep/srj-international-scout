@@ -63,7 +63,19 @@
                         <input type="number" id="pAge" placeholder="Age" required>
                         <input type="text" id="pNation" placeholder="Nationality" required>
                     </div>
-                    <input type="text" id="pClub" placeholder="Current Club">
+                    <div class="input-group">
+                        <input type="number" id="pHeight" placeholder="Height (cm)" required>
+                        <input type="number" id="pWeight" placeholder="Weight (kg)" required>
+                    </div>
+                    <div class="input-group">
+                        <select id="pFoot" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px;" required>
+                            <option value="" disabled selected>Preferred Foot</option>
+                            <option value="Right">Right Foot</option>
+                            <option value="Left">Left Foot</option>
+                            <option value="Both">Both Feet</option>
+                        </select>
+                        <input type="text" id="pClub" placeholder="Current Club (or Free Agent)">
+                    </div>
                     <button type="submit" class="btn-submit">Submit Profile to SRJ</button>
                 </form>
 
@@ -79,6 +91,10 @@
                             <option value="Admin">Management / Admin</option>
                             <option value="Other">Other Profession</option>
                         </select>
+                    </div>
+                    <div class="input-group">
+                        <input type="number" id="sHeight" placeholder="Height (cm)">
+                        <input type="number" id="sWeight" placeholder="Weight (kg)">
                     </div>
                     <div class="input-group">
                         <input type="text" id="sLicense" placeholder="Qualification / License" required>

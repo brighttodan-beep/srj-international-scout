@@ -15,11 +15,11 @@ const db = getFirestore(app);
 
 // --- NAVIGATION & TABS ---
 const tabPlayer = document.getElementById('tab-player');
-const tabStaff = document.getElementById('tab-staff'); // Renamed from tab-coach
+const tabStaff = document.getElementById('tab-staff'); 
 const tabClub = document.getElementById('tab-club');
 
 const playerForm = document.getElementById('playerForm');
-const staffForm = document.getElementById('staffForm'); // Renamed from coachForm
+const staffForm = document.getElementById('staffForm'); 
 const clubForm = document.getElementById('clubForm');
 
 tabPlayer.addEventListener('click', () => showForm(playerForm, tabPlayer));
@@ -39,7 +39,6 @@ onSnapshot(collection(db, "players"), (snap) => {
     document.getElementById('player-count').innerText = snap.size;
 });
 onSnapshot(collection(db, "staff"), (snap) => {
-    // This now tracks ALL staff (Coaches, Physios, etc.)
     document.getElementById('staff-count').innerText = snap.size;
 });
 onSnapshot(collection(db, "club_requests"), (snap) => {
@@ -48,7 +47,7 @@ onSnapshot(collection(db, "club_requests"), (snap) => {
 
 // --- SUBMISSIONS ---
 
-// 1. Player Submission
+// 1. Player Submission (Enhanced with Physical Profile)
 playerForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     try {
@@ -57,21 +56,26 @@ playerForm.addEventListener('submit', async (e) => {
             position: document.getElementById('pPos').value,
             age: document.getElementById('pAge').value,
             nationality: document.getElementById('pNation').value,
-            club: document.getElementById('pClub').value,
+            height: document.getElementById('pHeight').value, // Added
+            weight: document.getElementById('pWeight').value, // Added
+            foot: document.getElementById('pFoot').value,     // Added
+            club: document.getElementById('pClub').value || 'Free Agent',
             timestamp: new Date().toISOString()
         });
-        alert("Player application sent successfully!");
+        alert("Player application sent successfully! Mr. Sunny James will review your profile.");
         playerForm.reset();
     } catch (err) { alert(err.message); }
 });
 
-// 2. Staff Submission (Includes Coaches, Physios, Analysts, etc.)
+// 2. Staff Submission (Includes Physical Stats)
 staffForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     try {
         await addDoc(collection(db, "staff"), {
             name: document.getElementById('sName').value,
-            role: document.getElementById('sRole').value, // This is the dropdown value
+            role: document.getElementById('sRole').value,
+            height: document.getElementById('sHeight').value || 'N/A', // Added
+            weight: document.getElementById('sWeight').value || 'N/A', // Added
             qualification: document.getElementById('sLicense').value,
             experience: document.getElementById('sExp').value,
             nationality: document.getElementById('sNation').value,
