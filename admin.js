@@ -13,8 +13,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// --- GLOBAL ACTIONS ---
-
+// --- DELETE FUNCTION ---
 window.deleteEntry = async (col, id) => {
     if(confirm("Permanently delete this professional record?")) {
         try {
@@ -25,20 +24,18 @@ window.deleteEntry = async (col, id) => {
     }
 };
 
-// EXPORT FUNCTION: Updated to include Height, Weight, and Foot
+// --- EXPORT FUNCTION (CSV) ---
 window.exportTable = (tableId, fileName) => {
     const tableBody = document.getElementById(tableId);
     const rows = tableBody.querySelectorAll("tr");
     let csv = [];
     
-    // 1. Updated Headers for Scouting Reports
     if(tableId === "playerBody") {
         csv.push("Name,Position,Age,Physical (H/W),Foot,Nationality,Current Club");
     } else {
         csv.push("Name,Role/Dept,Physical (H/W),Experience,Nationality");
     }
 
-    // 2. Parse Data Rows
     rows.forEach(row => {
         const cols = row.querySelectorAll("td");
         if (cols.length > 1) { 
@@ -51,21 +48,18 @@ window.exportTable = (tableId, fileName) => {
         }
     });
 
-    // 3. Trigger download
     const csvString = csv.join("\n");
     const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement("a");
     const url = URL.createObjectURL(blob);
-    
     link.setAttribute("href", url);
     link.setAttribute("download", `${fileName}_${new Date().toISOString().split('T')[0]}.csv`);
-    link.style.visibility = 'hidden';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
 };
 
-// --- LOAD PLAYERS ---
+// --- LOAD PLAYERS (8 Columns) ---
 onSnapshot(collection(db, "players"), (snapshot) => {
     const tbody = document.getElementById('playerBody');
     tbody.innerHTML = ""; 
@@ -77,6 +71,7 @@ onSnapshot(collection(db, "players"), (snapshot) => {
 
     snapshot.forEach((doc) => {
         const p = doc.data();
+        // Ensure 8 <td> tags match the 8 <th> tags in HTML
         tbody.innerHTML += `
             <tr class="searchable-row" data-search="${p.name.toLowerCase()} ${p.position.toLowerCase()}">
                 <td>${p.name}</td>
@@ -92,7 +87,7 @@ onSnapshot(collection(db, "players"), (snapshot) => {
     });
 });
 
-// --- LOAD PROFESSIONAL STAFF ---
+// --- LOAD STAFF (6 Columns) ---
 onSnapshot(collection(db, "staff"), (snapshot) => {
     const tbody = document.getElementById('coachBody');
     tbody.innerHTML = "";
@@ -104,6 +99,7 @@ onSnapshot(collection(db, "staff"), (snapshot) => {
 
     snapshot.forEach((doc) => {
         const s = doc.data();
+        // Ensure 6 <td> tags match the 6 <th> tags in HTML
         tbody.innerHTML += `
             <tr class="searchable-row" data-search="${s.name.toLowerCase()} ${s.role.toLowerCase()}">
                 <td>${s.name}</td>
