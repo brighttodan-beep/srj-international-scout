@@ -33,7 +33,11 @@ nav {
     gap: 20px;
 }
 
-.nav-links a { color: white; text-decoration: none; font-weight: 600; }
+.nav-links a { 
+    color: white; 
+    text-decoration: none; 
+    font-weight: 600; 
+}
 
 .btn-primary {
     background-color: #00a8e8;
@@ -59,7 +63,7 @@ nav {
 }
 
 .container {
-    max-width: 900px;
+    max-width: 1100px;
     margin: 20px auto;
     padding: 20px;
 }
@@ -79,7 +83,11 @@ nav {
     text-align: center;
 }
 
-.stat { font-size: 2rem; font-weight: 800; color: #00a8e8; }
+.stat { 
+    font-size: 2rem; 
+    font-weight: 800; 
+    color: #00a8e8; 
+}
 
 /* --- FORM STYLES --- */
 .form-container {
@@ -127,7 +135,10 @@ input, select, textarea {
     font-size: 14px;
 }
 
-textarea { height: 100px; resize: vertical; }
+textarea { 
+    height: 100px; 
+    resize: vertical; 
+}
 
 .btn-submit {
     width: 100%;
@@ -141,13 +152,15 @@ textarea { height: 100px; resize: vertical; }
     transition: 0.3s;
 }
 
-.btn-submit:hover { background-color: #00a8e8; }
+.btn-submit:hover { 
+    background-color: #00a8e8; 
+}
 
 /* --- MARKETPLACE STYLES --- */
 #market-display {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 25px;
     margin-top: 30px;
 }
 
@@ -157,22 +170,85 @@ textarea { height: 100px; resize: vertical; }
     border-radius: 12px;
     border-left: 5px solid #00a8e8;
     box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease;
+}
+
+.opportunity-card:hover {
+    transform: translateY(-5px);
 }
 
 .badge {
     display: inline-block;
     padding: 4px 12px;
     border-radius: 20px;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 /* Color Coding for Marketplace Badges */
 .badge-trial { background: #27ae60; color: white; }    /* Green */
 .badge-contract { background: #f1c40f; color: #333; } /* Yellow/Gold */
 .badge-event { background: #e74c3c; color: white; }    /* Red */
-.badge-job { background: #3498db; color: white; }      /* Blue - For Job Opportunities */
+.badge-job { background: #3498db; color: white; }      /* Blue */
 
-.position-title { font-size: 1.2rem; font-weight: 700; color
+.position-title { 
+    font-size: 1.25rem; 
+    font-weight: 700; 
+    color: #051923; 
+    margin-bottom: 5px; 
+}
+
+.club-name {
+    font-weight: 600;
+    color: #00a8e8;
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.location {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.details-text {
+    font-size: 0.95rem;
+    color: #444;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+    margin-bottom: 20px;
+    min-height: 50px;
+}
+
+.apply-btn {
+    display: block;
+    text-align: center;
+    background-color: #051923;
+    color: white;
+    text-decoration: none;
+    padding: 12px;
+    border-radius: 5px;
+    font-weight: 700;
+    transition: 0.3s;
+}
+
+.apply-btn:hover {
+    background-color: #00a8e8;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+        margin-top: 20px;
+    }
+    .hero {
+        height: 30vh;
+    }
+    .input-group {
+        flex-direction: column;
+        gap: 0;
+    }
+}
