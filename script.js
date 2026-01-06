@@ -17,19 +17,28 @@ const db = getFirestore(app);
 const tabPlayer = document.getElementById('tab-player');
 const tabStaff = document.getElementById('tab-staff'); 
 const tabClub = document.getElementById('tab-club');
+const tabVacancy = document.getElementById('tab-vacancy');
+const tabPartner = document.getElementById('tab-partner');
 
 const playerForm = document.getElementById('playerForm');
 const staffForm = document.getElementById('staffForm'); 
 const clubForm = document.getElementById('clubForm');
+const vacancyForm = document.getElementById('vacancyForm');
+const partnerForm = document.getElementById('partnerForm');
 
+// Event Listeners for Tabs
 tabPlayer.addEventListener('click', () => showForm(playerForm, tabPlayer));
 tabStaff.addEventListener('click', () => showForm(staffForm, tabStaff));
 tabClub.addEventListener('click', () => showForm(clubForm, tabClub));
+tabVacancy.addEventListener('click', () => showForm(vacancyForm, tabVacancy));
+tabPartner.addEventListener('click', () => showForm(partnerForm, tabPartner));
 
 function showForm(activeForm, activeTab) {
-    [playerForm, staffForm, clubForm].forEach(f => f.style.display = 'none');
-    [tabPlayer, tabStaff, tabClub].forEach(t => t.classList.remove('active'));
+    // Hide all forms and reset all tab styles
+    [playerForm, staffForm, clubForm, vacancyForm, partnerForm].forEach(f => f.style.display = 'none');
+    [tabPlayer, tabStaff, tabClub, tabVacancy, tabPartner].forEach(t => t.classList.remove('active'));
     
+    // Show selected form and set active tab
     activeForm.style.display = 'block';
     activeTab.classList.add('active');
 }
@@ -74,8 +83,6 @@ staffForm.addEventListener('submit', async (e) => {
         await addDoc(collection(db, "staff"), {
             name: document.getElementById('sName').value.trim(),
             role: document.getElementById('sRole').value,
-            height: document.getElementById('sHeight').value || 'N/A',
-            weight: document.getElementById('sWeight').value || 'N/A',
             qualification: document.getElementById('sLicense').value.trim(),
             experience: document.getElementById('sExp').value,
             nationality: document.getElementById('sNation').value.trim(),
@@ -86,7 +93,7 @@ staffForm.addEventListener('submit', async (e) => {
     } catch (err) { alert(err.message); }
 });
 
-// 3. Club Request Submission (Supports "Job Opportunity")
+// 3. Club Request Submission
 clubForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     try {
@@ -94,11 +101,44 @@ clubForm.addEventListener('submit', async (e) => {
             clubName: document.getElementById('clubName').value.trim(),
             location: document.getElementById('clubLoc').value.trim(),
             positionRequired: document.getElementById('reqPos').value.trim(),
-            offerType: document.getElementById('offerType').value, // Captures Trial, Contract, or Job
+            offerType: document.getElementById('offerType').value,
             notes: document.getElementById('clubNotes').value.trim(),
             timestamp: new Date().toISOString()
         });
         alert("Opportunity posted to Marketplace!");
         clubForm.reset();
+    } catch (err) { alert(err.message); }
+});
+
+// 4. Agency Vacancy Submission
+vacancyForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    try {
+        await addDoc(collection(db, "vacancies"), {
+            name: document.getElementById('vName').value.trim(),
+            desiredRole: document.getElementById('vRole').value,
+            location: document.getElementById('vLocation').value.trim(),
+            message: document.getElementById('vMessage').value.trim(),
+            timestamp: new Date().toISOString()
+        });
+        alert("Application sent! The SRJ team will contact you if your profile matches our needs.");
+        vacancyForm.reset();
+    } catch (err) { alert(err.message); }
+});
+
+// 5. Partnership Proposal Submission
+partnerForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    try {
+        await addDoc(collection(db, "partnerships"), {
+            organization: document.getElementById('partOrg').value.trim(),
+            contactPerson: document.getElementById('partContact').value.trim(),
+            email: document.getElementById('partEmail').value.trim(),
+            partnershipType: document.getElementById('partType').value,
+            proposal: document.getElementById('partProposal').value.trim(),
+            timestamp: new Date().toISOString()
+        });
+        alert("Partnership proposal sent! We look forward to collaborating.");
+        partnerForm.reset();
     } catch (err) { alert(err.message); }
 });

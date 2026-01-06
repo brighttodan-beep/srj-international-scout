@@ -21,6 +21,7 @@
         .search-box { width: 100%; padding: 15px; margin: 20px 0; border: 2px solid #00a8e8; border-radius: 8px; font-size: 1rem; outline: none; }
         .table-header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         h3 { color: #051923; border-left: 5px solid #00a8e8; padding-left: 15px; margin: 0; }
+        .section-divider { height: 2px; background: #ddd; margin: 50px 0; }
     </style>
 </head>
 <body style="background: #f4f7f6;">
@@ -34,9 +35,9 @@
 
     <div class="admin-container">
         <h1>Agency Database</h1>
-        <p style="color: #666; margin-bottom: 30px;">Manage all registered players, professional staff, and market opportunities.</p>
+        <p style="color: #666; margin-bottom: 30px;">Manage all registered players, professional staff, and business opportunities.</p>
         
-        <input type="text" id="positionSearch" class="search-box" placeholder="🔍 Search records by name, club, or position...">
+        <input type="text" id="positionSearch" class="search-box" placeholder="🔍 Search records by name, club, position, or organization...">
 
         <div class="table-header-flex">
             <h3>Players Registry</h3>
@@ -45,19 +46,10 @@
         <table>
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Position</th>
-                    <th>Age</th>
-                    <th>Physical (H/W)</th>
-                    <th>Foot</th>
-                    <th>Nationality</th>
-                    <th>Club</th>
-                    <th>Action</th>
+                    <th>Name</th><th>Position</th><th>Age</th><th>Physical (H/W)</th><th>Foot</th><th>Nationality</th><th>Club</th><th>Action</th>
                 </tr>
             </thead>
-            <tbody id="playerBody">
-                <tr><td colspan="8" style="text-align:center;">Connecting to Database...</td></tr>
-            </tbody>
+            <tbody id="playerBody"><tr><td colspan="8" style="text-align:center;">Connecting to Database...</td></tr></tbody>
         </table>
 
         <div class="table-header-flex">
@@ -67,37 +59,51 @@
         <table>
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Role / Dept</th>
-                    <th>Physical (H/W)</th>
-                    <th>Experience</th>
-                    <th>Nationality</th>
-                    <th>Action</th>
+                    <th>Name</th><th>Role / Dept</th><th>Qualification</th><th>Experience</th><th>Nationality</th><th>Action</th>
                 </tr>
             </thead>
-            <tbody id="coachBody">
-                <tr><td colspan="6" style="text-align:center;">Connecting to Database...</td></tr>
-            </tbody>
+            <tbody id="coachBody"><tr><td colspan="6" style="text-align:center;">Connecting to Database...</td></tr></tbody>
         </table>
 
-        <div class="table-header-flex" style="margin-top: 40px;">
-            <h3>Marketplace Opportunities (Club Requests)</h3>
-            <button class="export-btn" onclick="exportTable('clubBody', 'SRJ_Market_Export')">📥 Export Market Data</button>
+        <div class="table-header-flex">
+            <h3>Marketplace Opportunities</h3>
+            <button class="export-btn" onclick="exportTable('clubBody', 'SRJ_Market_Export')">📥 Export Market</button>
         </div>
         <table>
             <thead>
                 <tr>
-                    <th>Club Name</th>
-                    <th>Location</th>
-                    <th>Position Required</th>
-                    <th>Offer Type</th>
-                    <th>Notes</th>
-                    <th>Action</th>
+                    <th>Club Name</th><th>Location</th><th>Requirement</th><th>Offer Type</th><th>Notes</th><th>Action</th>
                 </tr>
             </thead>
-            <tbody id="clubBody">
-                <tr><td colspan="6" style="text-align:center;">Loading Market Opportunities...</td></tr>
-            </tbody>
+            <tbody id="clubBody"><tr><td colspan="6" style="text-align:center;">Connecting to Database...</td></tr></tbody>
+        </table>
+
+        <div class="section-divider"></div>
+
+        <div class="table-header-flex">
+            <h3>Internal Agency Vacancies (Applicants)</h3>
+            <button class="export-btn" onclick="exportTable('vacancyBody', 'SRJ_Vacancies_Export')">📥 Export Applicants</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Applicant</th><th>Desired Role</th><th>Location</th><th>Message / Background</th><th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="vacancyBody"><tr><td colspan="5" style="text-align:center;">Loading Applications...</td></tr></tbody>
+        </table>
+
+        <div class="table-header-flex">
+            <h3>Partnership Proposals</h3>
+            <button class="export-btn" onclick="exportTable('partnerBody', 'SRJ_Partnerships_Export')">📥 Export Proposals</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Organization</th><th>Contact Name</th><th>Email</th><th>Type</th><th>Proposal Detail</th><th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="partnerBody"><tr><td colspan="6" style="text-align:center;">Loading Proposals...</td></tr></tbody>
         </table>
     </div>
 

@@ -30,20 +30,21 @@ window.exportTable = (tableId, fileName) => {
     const rows = tableBody.querySelectorAll("tr");
     let csv = [];
     
-    // Header Logic based on table
-    if(tableId === "playerBody") {
-        csv.push("Name,Position,Age,Physical (H/W),Foot,Nationality,Current Club");
-    } else if(tableId === "coachBody") {
-        csv.push("Name,Role/Dept,Physical (H/W),Experience,Nationality");
-    } else {
-        csv.push("Club Name,Location,Position Required,Offer Type,Notes");
-    }
+    // Custom Headers for each table
+    const headers = {
+        "playerBody": "Name,Position,Age,Physical (H/W),Foot,Nationality,Current Club",
+        "coachBody": "Name,Role/Dept,Physical (H/W),Experience,Nationality",
+        "clubBody": "Club Name,Location,Position Required,Offer Type,Notes",
+        "vacancyBody": "Applicant Name,Desired Role,Location,Background/Message",
+        "partnerBody": "Organization,Contact,Email,Type,Proposal"
+    };
+
+    csv.push(headers[tableId] || "Data");
 
     rows.forEach(row => {
         const cols = row.querySelectorAll("td");
         if (cols.length > 1) { 
             let rowData = [];
-            // Loop through cells except the 'Action' column
             for (let i = 0; i < cols.length - 1; i++) {
                 let cellText = cols[i].innerText.replace(/"/g, '""').replace(/\n/g, ' '); 
                 rowData.push(`"${cellText}"`);
@@ -52,78 +53,99 @@ window.exportTable = (tableId, fileName) => {
         }
     });
 
-    const csvString = csv.join("\n");
-    const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+    const blob = new Blob([csv.join("\n")], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement("a");
-    const url = URL.createObjectURL(blob);
-    link.setAttribute("href", url);
-    link.setAttribute("download", `${fileName}_${new Date().toISOString().split('T')[0]}.csv`);
-    document.body.appendChild(link);
+    link.href = URL.createObjectURL(blob);
+    link.download = `${fileName}_${new Date().toISOString().split('T')[0]}.csv`;
     link.click();
-    document.body.removeChild(link);
 };
 
-// --- LOAD PLAYERS (8 Columns) ---
-onSnapshot(collection(db, "players"), (snapshot) => {
+// --- LOAD DATA FUNCTIONS ---
+
+// 1. Players
+onSnapshot(collection(db, "players"), (snap) => {
     const tbody = document.getElementById('playerBody');
-    tbody.innerHTML = ""; 
-    if (snapshot.empty) {
-        tbody.innerHTML = "<tr><td colspan='8' style='text-align:center;'>No players found.</td></tr>";
-        return;
-    }
-    snapshot.forEach((doc) => {
+    tbody.innerHTML = snap.empty ? "<tr><td colspan='8' style='text-align:center;'>No players found.</td></tr>" : "";
+    snap.forEach((doc) => {
         const p = doc.data();
         tbody.innerHTML += `
             <tr class="searchable-row" data-search="${p.name.toLowerCase()} ${p.position.toLowerCase()}">
-                <td>${p.name}</td>
-                <td><strong>${p.position}</strong></td>
-                <td>${p.age}</td>
+                <td>${p.name}</td><td><strong>${p.position}</strong></td><td>${p.age}</td>
                 <td>${p.height}cm / ${p.weight}kg</td>
                 <td><mark style="background:#fff3cd; color:#856404;">${p.foot || 'N/A'}</mark></td>
-                <td>${p.nationality}</td>
-                <td>${p.club || 'Free Agent'}</td>
+                <td>${p.nationality}</td><td>${p.club || 'Free Agent'}</td>
                 <td><button class="delete-btn" onclick="deleteEntry('players', '${doc.id}')">Delete</button></td>
-            </tr>
-        `;
+            </tr>`;
     });
 });
 
-// --- LOAD STAFF (6 Columns) ---
-onSnapshot(collection(db, "staff"), (snapshot) => {
+// 2. Staff
+onSnapshot(collection(db, "staff"), (snap) => {
     const tbody = document.getElementById('coachBody');
-    tbody.innerHTML = "";
-    if (snapshot.empty) {
-        tbody.innerHTML = "<tr><td colspan='6' style='text-align:center;'>No professional staff found.</td></tr>";
-        return;
-    }
-    snapshot.forEach((doc) => {
+    tbody.innerHTML = snap.empty ? "<tr><td colspan='6' style='text-align:center;'>No staff found.</td></tr>" : "";
+    snap.forEach((doc) => {
         const s = doc.data();
         tbody.innerHTML += `
             <tr class="searchable-row" data-search="${s.name.toLowerCase()} ${s.role.toLowerCase()}">
-                <td>${s.name}</td>
-                <td><mark>${s.role}</mark></td>
+                <td>${s.name}</td><td><mark>${s.role}</mark></td>
                 <td>${s.height && s.weight ? s.height + 'cm / ' + s.weight + 'kg' : 'N/A'}</td>
-                <td>${s.experience} Years</td>
-                <td>${s.nationality}</td>
+                <td>${s.experience} Years</td><td>${s.nationality}</td>
                 <td><button class="delete-btn" onclick="deleteEntry('staff', '${doc.id}')">Delete</button></td>
-            </tr>
-        `;
+            </tr>`;
     });
 });
 
-// --- NEW: LOAD CLUB REQUESTS (6 Columns) ---
-onSnapshot(collection(db, "club_requests"), (snapshot) => {
+// 3. Club Requests (Market)
+onSnapshot(collection(db, "club_requests"), (snap) => {
     const tbody = document.getElementById('clubBody');
-    tbody.innerHTML = "";
-    if (snapshot.empty) {
-        tbody.innerHTML = "<tr><td colspan='6' style='text-align:center;'>No active market requests.</td></tr>";
-        return;
-    }
-    snapshot.forEach((doc) => {
+    tbody.innerHTML = snap.empty ? "<tr><td colspan='6' style='text-align:center;'>No active requests.</td></tr>" : "";
+    snap.forEach((doc) => {
         const c = doc.data();
-        let typeStyle = "color: #27ae60;"; 
-        if(c.offerType === "Job Opportunity") typeStyle = "color: #3498db;";
-        if(c.offerType === "Direct Contract") typeStyle = "color: #f39c12;";
-
         tbody.innerHTML += `
-            <tr class="searchable-row" data-search="${c.clubName.toLowerCase()} ${c.positionRequired.toLowerCase()} ${c.location.toLowerCase
+            <tr class="searchable-row" data-search="${c.clubName.toLowerCase()} ${c.positionRequired.toLowerCase()}">
+                <td><strong>${c.clubName}</strong></td><td>${c.location}</td>
+                <td>${c.positionRequired}</td><td><mark>${c.offerType}</mark></td>
+                <td><small>${c.notes || '-'}</small></td>
+                <td><button class="delete-btn" onclick="deleteEntry('club_requests', '${doc.id}')">Delete</button></td>
+            </tr>`;
+    });
+});
+
+// 4. Agency Vacancies
+onSnapshot(collection(db, "vacancies"), (snap) => {
+    const tbody = document.getElementById('vacancyBody');
+    tbody.innerHTML = snap.empty ? "<tr><td colspan='5' style='text-align:center;'>No applications.</td></tr>" : "";
+    snap.forEach((doc) => {
+        const v = doc.data();
+        tbody.innerHTML += `
+            <tr class="searchable-row" data-search="${v.name.toLowerCase()} ${v.desiredRole.toLowerCase()}">
+                <td><strong>${v.name}</strong></td><td><mark>${v.desiredRole}</mark></td>
+                <td>${v.location}</td><td><small>${v.message}</small></td>
+                <td><button class="delete-btn" onclick="deleteEntry('vacancies', '${doc.id}')">Delete</button></td>
+            </tr>`;
+    });
+});
+
+// 5. Partnerships
+onSnapshot(collection(db, "partnerships"), (snap) => {
+    const tbody = document.getElementById('partnerBody');
+    tbody.innerHTML = snap.empty ? "<tr><td colspan='6' style='text-align:center;'>No proposals.</td></tr>" : "";
+    snap.forEach((doc) => {
+        const p = doc.data();
+        tbody.innerHTML += `
+            <tr class="searchable-row" data-search="${p.organization.toLowerCase()} ${p.partnershipType.toLowerCase()}">
+                <td><strong>${p.organization}</strong></td><td>${p.contactPerson}</td>
+                <td><a href="mailto:${p.email}">${p.email}</a></td><td><mark>${p.partnershipType}</mark></td>
+                <td><small>${p.proposal}</small></td>
+                <td><button class="delete-btn" onclick="deleteEntry('partnerships', '${doc.id}')">Delete</button></td>
+            </tr>`;
+    });
+});
+
+// --- SEARCH LOGIC ---
+document.getElementById('positionSearch').addEventListener('input', (e) => {
+    const term = e.target.value.toLowerCase();
+    document.querySelectorAll('.searchable-row').forEach(row => {
+        row.style.display = row.getAttribute('data-search').includes(term) ? "" : "none";
+    });
+});

@@ -7,6 +7,31 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="icon" href="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/futbol.svg">
+    <style>
+        /* Ensuring the 5 tabs fit well on mobile and desktop */
+        .form-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+        .tab-btn {
+            padding: 10px 15px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            background: #f9f9f9;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: 0.3s;
+            font-size: 0.85rem;
+        }
+        .tab-btn.active {
+            background: #051923;
+            color: #00a8e8;
+            border-color: #051923;
+        }
+    </style>
 </head>
 <body>
 
@@ -48,9 +73,11 @@
         <section id="register" class="container">
             <div class="form-container">
                 <div class="form-tabs">
-                    <button id="tab-player" class="tab-btn active">Register as Player</button>
-                    <button id="tab-staff" class="tab-btn">Register as Staff</button>
+                    <button id="tab-player" class="tab-btn active">Register Player</button>
+                    <button id="tab-staff" class="tab-btn">Register Staff</button>
                     <button id="tab-club" class="tab-btn">Club Request</button>
+                    <button id="tab-vacancy" class="tab-btn">Agency Vacancy</button>
+                    <button id="tab-partner" class="tab-btn">Partnerships</button>
                 </div>
 
                 <form id="playerForm">
@@ -93,10 +120,6 @@
                         </select>
                     </div>
                     <div class="input-group">
-                        <input type="number" id="sHeight" placeholder="Height (cm)">
-                        <input type="number" id="sWeight" placeholder="Weight (kg)">
-                    </div>
-                    <div class="input-group">
                         <input type="text" id="sLicense" placeholder="Qualification / License" required>
                         <input type="number" id="sExp" placeholder="Years of Exp" required>
                     </div>
@@ -123,6 +146,46 @@
                     <textarea id="clubNotes" placeholder="Additional details (Salary, Duration, Housing etc.)..."></textarea>
                     <button type="submit" class="btn-submit">Post Request to Market</button>
                 </form>
+
+                <form id="vacancyForm" style="display:none;">
+                    <h2>Work with SRJ International</h2>
+                    <p style="font-size: 0.85rem; color: #666; margin-bottom: 15px;">Join our internal team of scouts and agents.</p>
+                    <div class="input-group">
+                        <input type="text" id="vName" placeholder="Full Name" required>
+                        <select id="vRole" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px;" required>
+                            <option value="" disabled selected>Position Desired</option>
+                            <option value="Regional Scout">Regional Scout</option>
+                            <option value="Agent / Intermediary">Agent / Intermediary</option>
+                            <option value="Social Media Manager">Social Media Manager</option>
+                            <option value="Data Analyst">Data Analyst</option>
+                        </select>
+                    </div>
+                    <input type="text" id="vLocation" placeholder="Current Location (City, Country)" required>
+                    <textarea id="vMessage" placeholder="Briefly describe your football background and why you want to join SRJ..."></textarea>
+                    <button type="submit" class="btn-submit">Submit Application</button>
+                </form>
+
+                <form id="partnerForm" style="display:none;">
+                    <h2>Partner with SRJ</h2>
+                    <p style="font-size: 0.85rem; color: #666; margin-bottom: 15px;">For Academies, Sports Brands, and Agencies.</p>
+                    <div class="input-group">
+                        <input type="text" id="partOrg" placeholder="Organization Name" required>
+                        <input type="text" id="partContact" placeholder="Contact Person" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="email" id="partEmail" placeholder="Official Email Address" required>
+                        <select id="partType" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px;" required>
+                            <option value="" disabled selected>Partnership Type</option>
+                            <option value="Academy Collaboration">Academy Collaboration</option>
+                            <option value="Sponsorship">Sponsorship / Branding</option>
+                            <option value="Player Exchange">Player Exchange</option>
+                            <option value="Technical/Service Provider">Technical/Service Provider</option>
+                        </select>
+                    </div>
+                    <textarea id="partProposal" placeholder="Describe your partnership proposal..."></textarea>
+                    <button type="submit" class="btn-submit">Send Proposal</button>
+                </form>
+
             </div>
         </section>
     </main>
